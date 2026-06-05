@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gstwatermark - невидимый watermark для GStreamer</title>
+    <meta
+      name="description"
+      content="Продуктовый лендинг GStreamer-плагина gstwatermark для встраивания и извлечения невидимого текстового watermark в видео."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="gstwatermark">
+        <span class="brand-mark" aria-hidden="true"><span>gw</span></span>
+        <span>gstwatermark</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#product">Продукт</a>
+        <a href="#workflow">Как работает</a>
+        <a href="#requirements">Требования</a>
+        <a href="#download">Скачать</a>
+      </nav>
+      <a class="header-cta" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark" target="_blank">
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M4 12h13"></path>
+            <path d="m13 6 6 6-6 6"></path>
+          </svg>
+        </span>
+        Репозиторий
+      </a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-bg" role="img" aria-label="Абстрактный видеопайплайн со скрытым watermark-сигналом"></div>
+        <div class="hero-noise" aria-hidden="true"></div>
+        <div class="hero-signal" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="hero-inner">
+          <p class="eyebrow">GStreamer video filter</p>
+          <h1 id="hero-title">gstwatermark</h1>
+          <p class="hero-lead">
+            Невидимый текстовый watermark для видео: встраивайте идентификатор в поток,
+            пережимайте ролик и извлекайте метку обратно через тот же GStreamer-пайплайн.
+          </p>
+          <div class="hero-actions" aria-label="Главные действия">
+            <a class="btn btn-primary" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M15 3h6v6"></path>
+                <path d="M10 14 21 3"></path>
+                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+              </svg>
+              Открыть исходный код
+            </a>
+            <a class="btn btn-secondary" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark/-/blob/master/docs/USER_GUIDE.md" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
+              </svg>
+              Документация
+            </a>
+          </div>
+          <dl class="hero-metrics" aria-label="Ключевые результаты">
+            <div>
+              <dt>до 70</dt>
+              <dd>символов в тестовой конфигурации</dd>
+            </div>
+            <div>
+              <dt>H.264 / H.265</dt>
+              <dd>проверенные режимы сжатия</dd>
+            </div>
+            <div>
+              <dt>Embed + Detect</dt>
+              <dd>один элемент для двух сценариев</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="intro-strip" aria-label="Коротко о продукте">
+        <div class="intro-strip-inner">
+          <span>Плагин для разработчиков видеосервисов, медиаархивов, учебных платформ и команд, которым нужно понимать происхождение видео без видимых логотипов.</span>
+          <a href="#product">Посмотреть сценарии</a>
+        </div>
+      </section>
+
+      <section class="section product-section" id="product" aria-labelledby="product-title">
+        <div class="section-heading">
+          <p class="eyebrow">Что это</p>
+          <h2 id="product-title">Маркер, который не мешает смотреть видео</h2>
+          <p>
+            `watermark` встраивает UTF-8 текст в яркостную плоскость кадра и оставляет картинку визуально прежней.
+            Пользователь видит обычный ролик, а техническая команда получает проверяемый идентификатор.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card accent-blue">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M3 6h18"></path>
+                <path d="M7 12h10"></path>
+                <path d="M5 18h14"></path>
+              </svg>
+            </span>
+            <h3>Встраивание в pipeline</h3>
+            <p>Элемент подключается как обычный GStreamer-фильтр и работает после `videoconvert` с raw-видео `I420`.</p>
+          </article>
+          <article class="feature-card accent-green">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="m9 12 2 2 4-5"></path>
+              </svg>
+            </span>
+            <h3>Извлечение результата</h3>
+            <p>В режиме `detect` плагин публикует `watermark-result` в GStreamer bus и может сохранить ответ в `.txt`.</p>
+          </article>
+          <article class="feature-card accent-coral">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M21 12a9 9 0 1 1-6.2-8.56"></path>
+                <path d="M21 3v6h-6"></path>
+                <path d="M12 7v5l3 2"></path>
+              </svg>
+            </span>
+            <h3>Быстрый CLI-wrapper</h3>
+            <p>`tools/watermark.py` сам находит собранный плагин, выставляет `GST_PLUGIN_PATH` и запускает нужный pipeline.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section workflow-section" id="workflow" aria-labelledby="workflow-title">
+        <div class="section-heading">
+          <p class="eyebrow">Как работает</p>
+          <h2 id="workflow-title">От метки к проверке за один понятный цикл</h2>
+          <p>Логика продукта укладывается в четыре шага: принять поток, встроить payload, пережить обработку и вернуть проверяемый результат.</p>
+        </div>
+        <div class="pipeline" aria-label="Схема применения">
+          <article>
+            <span>01</span>
+            <h3>Видео входит в GStreamer</h3>
+            <p>Файл, камера или RTSP-источник проходят через `decodebin`, `videoconvert` и `videoscale`.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Плагин встраивает payload</h3>
+            <p>Текст, ключ, сила и число копий задаются свойствами элемента или аргументами wrapper'а.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Ролик пережимается</h3>
+            <p>В тестах watermark сохранялся после H.264/H.265, bitrate-режимов и умеренного resize.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Метка извлекается</h3>
+            <p>`FOUND=true`, исходный текст, score, число кадров и copies возвращаются в человекочитаемом виде.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section demo-section" aria-labelledby="demo-title">
+        <div class="demo-copy">
+          <div class="section-heading section-heading--stack">
+            <p class="eyebrow">Демонстрация</p>
+            <h2 id="demo-title">В кадре ничего лишнего, в данных есть след</h2>
+            <p>
+              Watermark не рисует поверх видео баннеры или логотипы. Он добавляет скрытый текстовый payload,
+              который можно обнаружить при проверке файла.
+            </p>
+          </div>
+        </div>
+        <div class="demo-visual">
+          <div class="comparison" data-comparison>
+            <img src="assets/frame-source.jpg" alt="Исходный кадр видео">
+            <div class="comparison-after" data-after>
+              <img src="assets/frame-watermarked.jpg" alt="Кадр после встраивания невидимой метки">
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="52"
+              aria-label="Сравнение исходного и обработанного кадра"
+              data-slider
+            >
+            <div class="comparison-labels" aria-hidden="true">
+              <span>source</span>
+              <span>watermarked</span>
+            </div>
+          </div>
+          <div class="result-panel result-panel--inline" aria-label="Пример результата извлечения">
+            <div class="panel-top">
+              <span></span>
+              <span></span>
+              <span></span>
+              <strong>detected.txt</strong>
+            </div>
+            <pre><code>FOUND=true
+TEXT=DEMO01
+SCORE=54.7
+FRAMES=581
+COPIES=10</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section audience-section" aria-labelledby="audience-title">
+        <div class="section-heading">
+          <p class="eyebrow">Для кого</p>
+          <h2 id="audience-title">Сценарии, где важно доказать происхождение видео</h2>
+          <p>Продукт полезен там, где видео передаётся между людьми, сервисами или устройствами, а источник копии нужно определить без видимых отметок.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card">
+            <h3>Видеоплатформы и LMS</h3>
+            <p>Помогает помечать учебные и закрытые ролики идентификатором курса, группы или выдачи.</p>
+            <strong>Результат: проще расследовать утечки без видимых водяных знаков.</strong>
+          </article>
+          <article class="audience-card">
+            <h3>Медиаархивы и продакшен</h3>
+            <p>Подходит для внутренних копий, превью и материалов, которые проходят через несколько подрядчиков.</p>
+            <strong>Результат: у каждой копии появляется технический след.</strong>
+          </article>
+          <article class="audience-card">
+            <h3>Интеграторы GStreamer</h3>
+            <p>Можно использовать как готовый элемент `watermark` или как wrapper без ручной сборки pipeline.</p>
+            <strong>Результат: меньше кода вокруг защиты и проверки.</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section proof-section" aria-labelledby="proof-title">
+        <div class="section-heading">
+          <p class="eyebrow">Проверено</p>
+          <h2 id="proof-title">Измеренные границы устойчивости</h2>
+          <p>Базовая конфигурация тестов: 960x540, `strength=16`, `copies=10`, короткий текст для codec/bitrate/resize.</p>
+        </div>
+        <div class="proof-grid">
+          <article>
+            <span>70</span>
+            <h3>символов</h3>
+            <p>последняя успешная длина текста при H.264 q=28</p>
+          </article>
+          <article>
+            <span>48</span>
+            <h3>H.264 quantizer</h3>
+            <p>метка извлекалась до q=48 включительно</p>
+          </article>
+          <article>
+            <span>212</span>
+            <h3>kbit/s H.265</h3>
+            <p>минимальный рабочий bitrate в тестовом наборе</p>
+          </article>
+          <article class="proof-card--wide">
+            <span>370x208</span>
+            <h3>resize</h3>
+            <p>граница успешного извлечения после уменьшения размера</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section requirements-section" id="requirements" aria-labelledby="requirements-title">
+        <div class="requirements-visual" aria-label="Совместимость и стек запуска">
+          <div class="stack-panel">
+            <div class="stack-top">
+              <span></span>
+              <strong>runtime stack</strong>
+            </div>
+            <div class="stack-flow">
+              <div>
+                <span>01</span>
+                <strong>GStreamer</strong>
+              </div>
+              <div>
+                <span>02</span>
+                <strong>I420 raw video</strong>
+              </div>
+              <div>
+                <span>03</span>
+                <strong>watermark</strong>
+              </div>
+              <div>
+                <span>04</span>
+                <strong>H.264 / H.265</strong>
+              </div>
+            </div>
+            <div class="stack-signal" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+        <div class="requirements-copy">
+          <div class="section-heading section-heading--stack">
+            <p class="eyebrow">Что нужно</p>
+            <h2 id="requirements-title">Минимальный набор для запуска</h2>
+            <p>Плагин рассчитан на техническую команду, которая уже работает с GStreamer или собирает собственный видеопайплайн.</p>
+          </div>
+          <ul class="requirements-list">
+            <li><strong>GStreamer 1.0</strong><span>runtime, development files и плагины для H.264/H.265.</span></li>
+            <li><strong>CMake 4.2+</strong><span>сборка shared library под Windows или Linux.</span></li>
+            <li><strong>C compiler</strong><span>Visual Studio Build Tools, GCC или Clang.</span></li>
+            <li><strong>Python 3.9+</strong><span>wrapper `embed`, `detect`, `inspect` и тестовые runner'ы.</span></li>
+            <li><strong>video/x-raw I420</strong><span>обычно перед плагином ставятся `videoconvert` и `videoscale`.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section commands-section" id="download" aria-labelledby="download-title">
+        <div class="download-copy">
+          <div class="section-heading section-heading--stack">
+            <p class="eyebrow">Скачать и запустить</p>
+            <h2 id="download-title">Код, сборка и документация в одном репозитории</h2>
+            <p>
+              Проект поставляется как исходный код C-плагина, Python-wrapper, тестовые скрипты и две документации:
+              пользовательская и для разработчика.
+            </p>
+          </div>
+          <div class="download-actions">
+            <a class="btn btn-primary" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                <path d="M7 11l5 5 5-5"></path>
+                <path d="M12 4v12"></path>
+              </svg>
+              Перейти в репозиторий
+            </a>
+            <a class="btn btn-secondary light" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark/-/blob/master/docs/DEVELOPER_GUIDE.md" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="m18 16 4-4-4-4"></path>
+                <path d="m6 8-4 4 4 4"></path>
+                <path d="m14.5 4-5 16"></path>
+              </svg>
+              Developer Guide
+            </a>
+          </div>
+        </div>
+        <div class="command-card" aria-label="Команды быстрого старта">
+          <div class="panel-top">
+            <span></span>
+            <span></span>
+            <span></span>
+            <strong>quick-start.ps1</strong>
+          </div>
+          <pre><code id="quickstart">cmake -S . -B .\build
+cmake --build .\build --config Release
+
+python .\tools\watermark.py inspect
+python .\tools\watermark.py embed --input input.mp4 --output watermarked.mp4 --text DEMO01
+python .\tools\watermark.py detect --input watermarked.mp4 --copies 10</code></pre>
+          <button class="copy-button" type="button" data-copy="#quickstart" title="Скопировать команды" aria-label="Скопировать команды">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="section product-cta" aria-labelledby="product-cta-title">
+        <div class="section-heading section-heading--stack">
+          <p class="eyebrow">Готов к интеграции</p>
+          <h2 id="product-cta-title">Добавьте невидимую маркировку в свой видеопайплайн</h2>
+          <p>Возьмите исходный код, соберите плагин под свою систему и проверьте сценарий на собственном видео.</p>
+        </div>
+        <div class="product-cta-actions">
+          <a class="btn btn-primary" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark" target="_blank">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 12h13"></path>
+              <path d="m13 6 6 6-6 6"></path>
+            </svg>
+            Открыть репозиторий
+          </a>
+          <a class="btn btn-secondary light" href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark/-/blob/master/docs/USER_GUIDE.md" target="_blank">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
+            </svg>
+            User Guide
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a class="brand" href="#top" aria-label="gstwatermark">
+            <span class="brand-mark" aria-hidden="true"><span>gw</span></span>
+            <span>gstwatermark</span>
+          </a>
+          <p>GStreamer-плагин для невидимого текстового watermark в видео: embed, detect, wrapper и тесты устойчивости.</p>
+        </div>
+        <nav class="footer-links" aria-label="Ссылки в футере">
+          <a href="#product">Продукт</a>
+          <a href="#workflow">Как работает</a>
+          <a href="#requirements">Требования</a>
+          <a href="https://git.miem.hse.ru/rofedorov/gstreamer-watermark/-/blob/master/README.md">README</a>
+        </nav>
+        <div class="footer-meta">
+          <span>Windows / Linux</span>
+          <span>GStreamer 1.0</span>
+          <span>H.264 / H.265</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
